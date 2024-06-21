@@ -46,9 +46,21 @@ jobs:
       run: |
         Invoke-WebRequest -Uri "https://aka.ms/PowerAppsCLI" -OutFile "PowerAppsCLI.msi"
         Start-Process msiexec.exe -ArgumentList "/i PowerAppsCLI.msi /quiet /norestart" -NoNewWindow -Wait
-  
-        $env:PATH += ";$($Env:ProgramFiles)\Microsoft Power Platform\CLI" # Add CLI installation directory to PATH
-        [System.Environment]::SetEnvironmentVariable("PATH", $env:PATH, [System.EnvironmentVariableTarget]::Process)
+        
+    - name: Find pac.exe
+      run: |
+        Get-ChildItem -Path "C:\" -Recurse -Filter "pac.exe" -ErrorAction SilentlyContinue | Select-Object FullName
+
+    - name: Add pac.exe to PATH
+      run: |
+        $pacPath = (Get-ChildItem -Path "C:\" -Recurse -Filter "pac.exe" -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName)
+        if ($pacPath) {
+          $pacDir = [System.IO.Path]::GetDirectoryName($pacPath)
+          $env:PATH += ";$pacDir"
+          [System.Environment]::SetEnvironmentVariable("PATH", $env:PATH, [System.EnvironmentVariableTarget]::Process)
+        } else {
+          Write-Error "pac.exe not found"
+        }
         
     - name: Verify Installation
       run: |
