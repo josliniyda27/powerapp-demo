@@ -67,9 +67,9 @@ jobs:
     #       Write-Error "pac.exe not found"
     #     }
         
-    - name: Verify Installation
-      run: |
-        pac --version
+    # - name: Verify Installation
+    #   run: |
+    #     pac --version
 
     - name: who-am-i action
       uses: microsoft/powerplatform-actions/who-am-i@v0
