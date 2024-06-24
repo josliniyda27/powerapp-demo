@@ -44,37 +44,45 @@ jobs:
     - name: Who am I
       run: |
         whoami
-
+        
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+          node-version: '14'  # You can specify the Node.js version you need
+ 
     - name: Install Power Platform CLI
       run: |
-        Invoke-WebRequest -Uri "https://aka.ms/PowerAppsCLI" -OutFile "PowerAppsCLI.msi"
-        Start-Process msiexec.exe -ArgumentList "/i PowerAppsCLI.msi /quiet /norestart" -NoNewWindow -Wait
-        #Invoke-WebRequest -Uri "https://aka.ms/PowerAppsCLI" -OutFile "PowerAppsCLI.msi"
-        #Start-Process msiexec.exe -ArgumentList "/i PowerAppsCLI.msi /quiet /norestart" -NoNewWindow -Wait
-        
-    - name: Verify Installation Directory and Update PATH
-      run: |
-          $pacCommand = Get-Command pac.cmd -ErrorAction SilentlyContinue
-          if ($pacCommand) {
-            Write-Host "pac.cmd found at: $($pacCommand.Source)"
-          } else {
-            Write-Host "pac.cmd not found in PATH. Searching manually..."
-            $pacPath = Get-ChildItem -Path "C:\" -Recurse -Filter "pac.cmd" -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName
-            if ($pacPath) {
-              $pacDir = [System.IO.Path]::GetDirectoryName($pacPath)
-              Write-Host "pac.cmd found manually at: $pacPath"
-              [System.Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";$pacDir", [System.EnvironmentVariableTarget]::Machine)
-              Write-Host "PATH updated with: $pacDir"
-            } else {
-              Write-Error "pac.cmd not found"
-              exit 1
-            }
-          }
-
-        
-    - name: Verify version of pac CLI
+        npm install -g @microsoft/powerplatform-cli
+ 
+    - name: Verify pac installation
       run: |
         pac --version
+
+    # - name: Install Power Platform CLI
+    #   run: |
+    #     Invoke-WebRequest -Uri "https://aka.ms/PowerAppsCLI" -OutFile "PowerAppsCLI.msi"
+    #     Start-Process msiexec.exe -ArgumentList "/i PowerAppsCLI.msi /quiet /norestart" -NoNewWindow -Wait
+    #     #Invoke-WebRequest -Uri "https://aka.ms/PowerAppsCLI" -OutFile "PowerAppsCLI.msi"
+    #     #Start-Process msiexec.exe -ArgumentList "/i PowerAppsCLI.msi /quiet /norestart" -NoNewWindow -Wait
+        
+    # - name: Verify Installation Directory and Update PATH
+    #   run: |
+    #       $pacCommand = Get-Command pac.cmd -ErrorAction SilentlyContinue
+    #       if ($pacCommand) {
+    #         Write-Host "pac.cmd found at: $($pacCommand.Source)"
+    #       } else {
+    #         Write-Host "pac.cmd not found in PATH. Searching manually..."
+    #         $pacPath = Get-ChildItem -Path "C:\" -Recurse -Filter "pac.cmd" -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName
+    #         if ($pacPath) {
+    #           $pacDir = [System.IO.Path]::GetDirectoryName($pacPath)
+    #           Write-Host "pac.cmd found manually at: $pacPath"
+    #           [System.Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";$pacDir", [System.EnvironmentVariableTarget]::Machine)
+    #           Write-Host "PATH updated with: $pacDir"
+    #         } else {
+    #           Write-Error "pac.cmd not found"
+    #           exit 1
+    #         }
+    #       }
      
 
     - name: who-am-i action
