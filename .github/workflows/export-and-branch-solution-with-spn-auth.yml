@@ -73,7 +73,7 @@ jobs:
     - name: Verify Installation
       run: |
         pac --version
-      runas: 'sssbg4nbl513\administrator'
+     
 
     - name: who-am-i action
       uses: microsoft/powerplatform-actions/who-am-i@v0
