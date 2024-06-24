@@ -45,14 +45,17 @@ jobs:
       run: |
         whoami
         
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-          node-version: '18'  # You can specify the Node.js version you need
+    # - name: Set up Node.js
+    #   uses: actions/setup-node@v3
+    #   with:
+    #       node-version: '18'  # You can specify the Node.js version you need
  
-    - name: Install Power Platform CLI
-      run: |
-        npm install -g @microsoft/powerplatform-cli
+    # - name: Install Power Platform CLI
+    #   run: |
+    #     npm install -g @microsoft/powerplatform-cli
+    
+    - name: Install Power Platform Tools
+      uses: microsoft/powerplatform-actions/actions-install@v1
  
     - name: Verify pac installation
       run: |
