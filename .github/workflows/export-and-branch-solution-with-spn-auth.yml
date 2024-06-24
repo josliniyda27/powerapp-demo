@@ -51,7 +51,7 @@ jobs:
           node-version: '16'  # Node.js version 
  
     - name: Install Power Platform CLI and check version
-      uses: microsoft/powerapps-tools@v1
+      uses: microsoft/powerapps-tools@v1.3
       with:
           package-version: vLatest
           
