@@ -48,7 +48,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-          node-version: '14'  # You can specify the Node.js version you need
+          node-version: '16'  # Node.js version 
  
     - name: Install Power Platform CLI and check version
       run: |
