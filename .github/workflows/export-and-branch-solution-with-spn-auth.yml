@@ -42,34 +42,34 @@ jobs:
       with:
         lfs: true
 
-    # - name: Install Power Platform CLI
-    #   run: |
-    #     Invoke-WebRequest -Uri "https://aka.ms/PowerAppsCLI" -OutFile "PowerAppsCLI.msi"
-    #     Start-Process msiexec.exe -ArgumentList "/i PowerAppsCLI.msi /quiet /norestart" -NoNewWindow -Wait
+    - name: Install Power Platform CLI
+      run: |
+        Invoke-WebRequest -Uri "https://aka.ms/PowerAppsCLI" -OutFile "PowerAppsCLI.msi"
+        Start-Process msiexec.exe -ArgumentList "/i PowerAppsCLI.msi /quiet /norestart" -NoNewWindow -Wait
         
-    # - name: Find pac.exe
-    #   run: |
-    #       $pacCommand = Get-Command pac -ErrorAction SilentlyContinue
-    #       if ($pacCommand) {
-    #         Write-Host "pac.exe found at: $($pacCommand.Source)"
-    #       } else {
-    #         Write-Error "pac.exe not found"
-    #       }
+    - name: Find pac.exe
+      run: |
+          $pacCommand = Get-Command pac -ErrorAction SilentlyContinue
+          if ($pacCommand) {
+            Write-Host "pac.exe found at: $($pacCommand.Source)"
+          } else {
+            Write-Error "pac.exe not found"
+          }
 
-    # - name: Add pac.exe to PATH
-    #   run: |
-    #     $pacPath = (Get-ChildItem -Path "C:\" -Recurse -Filter "pac.exe" -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName)
-    #     if ($pacPath) {
-    #       $pacDir = [System.IO.Path]::GetDirectoryName($pacPath)
-    #       $env:PATH += ";$pacDir"
-    #       [System.Environment]::SetEnvironmentVariable("PATH", $env:PATH, [System.EnvironmentVariableTarget]::Process)
-    #     } else {
-    #       Write-Error "pac.exe not found"
-    #     }
+    - name: Add pac.exe to PATH
+      run: |
+        $pacPath = (Get-ChildItem -Path "C:\" -Recurse -Filter "pac.exe" -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName)
+        if ($pacPath) {
+          $pacDir = [System.IO.Path]::GetDirectoryName($pacPath)
+          $env:PATH += ";$pacDir"
+          [System.Environment]::SetEnvironmentVariable("PATH", $env:PATH, [System.EnvironmentVariableTarget]::Process)
+        } else {
+          Write-Error "pac.exe not found"
+        }
         
-    # - name: Verify Installation
-    #   run: |
-    #     pac --version
+    - name: Verify Installation
+      run: |
+        pac --version
 
     - name: who-am-i action
       uses: microsoft/powerplatform-actions/who-am-i@v0
