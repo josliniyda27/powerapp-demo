@@ -49,28 +49,30 @@ jobs:
       run: |
         Invoke-WebRequest -Uri "https://aka.ms/PowerAppsCLI" -OutFile "PowerAppsCLI.msi"
         Start-Process msiexec.exe -ArgumentList "/i PowerAppsCLI.msi /quiet /norestart" -NoNewWindow -Wait
+        #Invoke-WebRequest -Uri "https://aka.ms/PowerAppsCLI" -OutFile "PowerAppsCLI.msi"
+        #Start-Process msiexec.exe -ArgumentList "/i PowerAppsCLI.msi /quiet /norestart" -NoNewWindow -Wait
         
-    - name: Find pac.cmd
+    - name: Verify Installation Directory and Update PATH
       run: |
           $pacCommand = Get-Command pac.cmd -ErrorAction SilentlyContinue
           if ($pacCommand) {
             Write-Host "pac.cmd found at: $($pacCommand.Source)"
           } else {
-            Write-Error "pac.cmd not found"
+            Write-Host "pac.cmd not found in PATH. Searching manually..."
+            $pacPath = Get-ChildItem -Path "C:\" -Recurse -Filter "pac.cmd" -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName
+            if ($pacPath) {
+              $pacDir = [System.IO.Path]::GetDirectoryName($pacPath)
+              Write-Host "pac.cmd found manually at: $pacPath"
+              [System.Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";$pacDir", [System.EnvironmentVariableTarget]::Machine)
+              Write-Host "PATH updated with: $pacDir"
+            } else {
+              Write-Error "pac.cmd not found"
+              exit 1
+            }
           }
 
-    - name: Add pac.cmd to PATH
-      run: |
-        $pacPath = (Get-ChildItem -Path "C:\" -Recurse -Filter "pac.cmd" -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName)
-        if ($pacPath) {
-          $pacDir = [System.IO.Path]::GetDirectoryName($pacPath)
-          $env:PATH += ";$pacDir"
-          [System.Environment]::SetEnvironmentVariable("PATH", $env:PATH, [System.EnvironmentVariableTarget]::Process)
-        } else {
-          Write-Error "pac.cmd not found"
-        }
         
-    - name: Verify Installation
+    - name: Verify version of pac CLI
       run: |
         pac --version
      
