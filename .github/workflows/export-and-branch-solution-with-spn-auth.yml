@@ -41,6 +41,9 @@ jobs:
     - uses: actions/checkout@v2
       with:
         lfs: true
+    - name: Who am I
+      run: |
+        whoami
 
     # - name: Install Power Platform CLI
     #   run: |
