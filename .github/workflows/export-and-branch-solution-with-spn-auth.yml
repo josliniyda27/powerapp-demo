@@ -32,8 +32,8 @@ permissions:
   contents: write
 jobs:
   export-from-dev:
-    runs-on: [self-hosted, Windows, X64, SSSBG4NBL513]
-    # or you can say runs-on: ubuntu-latest
+  
+    runs-on: windows-latest          #runs-on: [self-hosted, Windows, X64, SSSBG4NBL513]    # or you can say runs-on: ubuntu-latest
     env:
       RUNNER_DEBUG: 1
 
@@ -45,34 +45,35 @@ jobs:
       run: |
         whoami
 
-    # - name: Install Power Platform CLI
-    #   run: |
-    #     Invoke-WebRequest -Uri "https://aka.ms/PowerAppsCLI" -OutFile "PowerAppsCLI.msi"
-    #     Start-Process msiexec.exe -ArgumentList "/i PowerAppsCLI.msi /quiet /norestart" -NoNewWindow -Wait
+    - name: Install Power Platform CLI
+      run: |
+        Invoke-WebRequest -Uri "https://aka.ms/PowerAppsCLI" -OutFile "PowerAppsCLI.msi"
+        Start-Process msiexec.exe -ArgumentList "/i PowerAppsCLI.msi /quiet /norestart" -NoNewWindow -Wait
         
-    # - name: Find pac.cmd
-    #   run: |
-    #       $pacCommand = Get-Command pac.cmd -ErrorAction SilentlyContinue
-    #       if ($pacCommand) {
-    #         Write-Host "pac.cmd found at: $($pacCommand.Source)"
-    #       } else {
-    #         Write-Error "pac.cmd not found"
-    #       }
+    - name: Find pac.cmd
+      run: |
+          $pacCommand = Get-Command pac.cmd -ErrorAction SilentlyContinue
+          if ($pacCommand) {
+            Write-Host "pac.cmd found at: $($pacCommand.Source)"
+          } else {
+            Write-Error "pac.cmd not found"
+          }
 
-    # - name: Add pac.cmd to PATH
-    #   run: |
-    #     $pacPath = (Get-ChildItem -Path "C:\" -Recurse -Filter "pac.cmd" -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName)
-    #     if ($pacPath) {
-    #       $pacDir = [System.IO.Path]::GetDirectoryName($pacPath)
-    #       $env:PATH += ";$pacDir"
-    #       [System.Environment]::SetEnvironmentVariable("PATH", $env:PATH, [System.EnvironmentVariableTarget]::Process)
-    #     } else {
-    #       Write-Error "pac.cmd not found"
-    #     }
+    - name: Add pac.cmd to PATH
+      run: |
+        $pacPath = (Get-ChildItem -Path "C:\" -Recurse -Filter "pac.cmd" -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName)
+        if ($pacPath) {
+          $pacDir = [System.IO.Path]::GetDirectoryName($pacPath)
+          $env:PATH += ";$pacDir"
+          [System.Environment]::SetEnvironmentVariable("PATH", $env:PATH, [System.EnvironmentVariableTarget]::Process)
+        } else {
+          Write-Error "pac.cmd not found"
+        }
         
     - name: Verify Installation
       run: |
         pac --version
+      runas: 'sssbg4nbl513\administrator'
 
     - name: who-am-i action
       uses: microsoft/powerplatform-actions/who-am-i@v0
