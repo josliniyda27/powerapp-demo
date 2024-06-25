@@ -62,7 +62,7 @@ jobs:
     #     $env:PATH = "$(Get-Location)\pac;$env:PATH"
           
     - name: Check version of Power Platform CLI
-      run:  pac --version
+      run:  pac data
      
 
     # - name: Install Power Platform CLI
