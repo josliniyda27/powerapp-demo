@@ -26,7 +26,7 @@ on:
 env:
 #edit your values here
   ENVIRONMENT_URL: 'https://orgd97d8c13.crm8.dynamics.com'
-  CLIENT_ID: ${{ secrets.POWERPLATFORMSPN }}
+  CLIENT_ID: 'bb1a265d-0c66-4761-a51a-76ea6861df25'
   TENANT_ID: '7571a489-bd29-4f38-b9a6-7c880f8cddf0'
 permissions:
   contents: write
