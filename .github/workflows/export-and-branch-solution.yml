@@ -25,7 +25,7 @@ on:
        default: solutions/
 env:
 #edit your values here
-  ENVIRONMENT_URL: 'orgd97d8c13.crm8.dynamics.com'
+  ENVIRONMENT_URL: 'http://orgd97d8c13.crm8.dynamics.com'
   CLIENT_ID: ${{ secrets.POWERPLATFORMSPN }}
   TENANT_ID: '7571a489-bd29-4f38-b9a6-7c880f8cddf0'
 permissions:
