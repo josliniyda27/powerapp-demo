@@ -9,7 +9,7 @@ on:
       solution_name:
         description: 'name of the solution to worked on from Power Platform'
         required: true
-        default: Common Data Services Default Solution
+        default: 'Common Data Services Default Solution'
        #Do Not change these values
       solution_exported_folder:
         description: 'folder name for staging the exported solution *do not change*'
@@ -54,15 +54,12 @@ jobs:
     #   run: |
     #     npm install -g powerapps-cli
 
-    - name: Download PowerApps CLI (pac)
-      run: |
-        # Download the pac tool
-        Invoke-WebRequest -Uri https://aka.ms/PowerAppsCLI -OutFile pac.zip
-        Expand-Archive -Path pac.zip -DestinationPath pac
-        $env:PATH = "$(Get-Location)\pac;$env:PATH"
-
-    - name: Verify PowerApps CLI installation
-      run: pac --version
+    # - name: Download PowerApps CLI (pac)
+    #   run: |
+    #     # Download the pac tool
+    #     Invoke-WebRequest -Uri https://aka.ms/PowerAppsCLI -OutFile pac.zip
+    #     Expand-Archive -Path pac.zip -DestinationPath pac
+    #     $env:PATH = "$(Get-Location)\pac;$env:PATH"
           
     - name: Check version of Power Platform CLI
       run:  pac --version
