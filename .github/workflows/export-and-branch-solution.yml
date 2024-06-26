@@ -39,10 +39,12 @@ jobs:
       RUNNER_DEBUG: 1
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout to Repository
+      uses: actions/checkout@v3
       with:
         lfs: true
-    - name: Who am I
+        
+    - name: Who am I #Check the user
       run: |
         whoami
         
@@ -50,26 +52,24 @@ jobs:
     #   uses: actions/setup-node@v3
     #   with:
     #       node-version: '16'  # Node.js version 
- 
     # - name: Install Power Platform CLI and check version
     #   run: |
-    #     npm install -g powerapps-cli
+    #     npm install -g powerapps-cli   #paccli installation with node
 
     # - name: Download PowerApps CLI (pac)
     #   run: |
-    #     # Download the pac tool
-    #     Invoke-WebRequest -Uri https://aka.ms/PowerAppsCLI -OutFile pac.zip
-    #     Expand-Archive -Path pac.zip -DestinationPath pac
-    #     $env:PATH = "$(Get-Location)\pac;$env:PATH"
-          
-    - name: Check version of Power Platform CLI
-      run:  pac data
-     
-
-    # - name: Install Power Platform CLI
-    #   run: |
     #     Invoke-WebRequest -Uri "https://aka.ms/PowerAppsCLI" -OutFile "PowerAppsCLI.msi"
     #     Start-Process msiexec.exe -ArgumentList "/i PowerAppsCLI.msi /quiet /norestart" -NoNewWindow -Wait
+    #     $env:PATH = "$(Get-Location)\pac;$env:PATH"     
+
+    - name: Install Power Platform CLI
+      run: |
+        Invoke-WebRequest -Uri "https://aka.ms/PowerAppsCLI" -OutFile "PowerAppsCLI.msi"
+        Start-Process msiexec.exe -ArgumentList "/i PowerAppsCLI.msi /quiet /norestart" -NoNewWindow -Wait
+        $env:PATH = "$(Get-Location)\pac;$env:PATH"
+        
+    - name: Check version of Power Platform CLI
+      run:  pac data
         
     # - name: Verify Installation Directory and Update PATH
     #   run: |
